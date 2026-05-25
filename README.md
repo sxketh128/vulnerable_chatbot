@@ -22,7 +22,18 @@ A simple terminal-based chatbot application using the Google Gemini API, configu
    python chatbot.py
    ```
 
-4. **API Key**: Enter your Gemini API key in the terminal prompt at startup.
+4. **API Key**: 
+   - **Method A (Private - Recommended)**: Create a file named `.env` in the project root directory and add your key:
+     ```env
+     GEMINI_API_KEY=your_gemini_api_key_here
+     ```
+     *(The `.env` file is already listed in `.gitignore` and won't be pushed to GitHub.)*
+   - **Method B (Prompt)**: If no `.env` file is present, the app will visually prompt you to paste your key in the middle of the terminal at startup.
+
+## Features
+- **Real-time Streaming**: Response tokens are outputted word-by-word as they generate, making responses feel instant.
+- **Auto-login**: Saves you from copying/pasting your key repeatedly by reading `.env` locally.
+- **Model Compatibility**: Uses `gemini-flash-latest` (the alias for Gemini 1.5 Flash) which is optimized for fast and low-latency testing.
 
 ## Security Testing (Prompt Injection)
 

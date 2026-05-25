@@ -2,8 +2,14 @@ import os
 import sys
 import shutil
 import getpass
+import re
 from dotenv import load_dotenv
 import google.generativeai as genai
+
+def strip_ansi(text):
+    # Regex to match ANSI escape sequences
+    ansi_escape = re.compile(r'\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])')
+    return ansi_escape.sub('', text)
 
 def clear_screen():
     os.system('cls' if os.name == 'nt' else 'clear')
@@ -13,9 +19,7 @@ def print_centered(text, color_code=""):
     reset = "\033[0m" if color_code else ""
     for line in text.split('\n'):
         # Strip ANSI escape codes to calculate length accurately for centering
-        clean_line = line
-        # Simple estimation of printable characters
-        # (Though our design header won't have complex nested ansi, let's keep it simple)
+        clean_line = strip_ansi(line)
         padding = max(0, (columns - len(clean_line)) // 2)
         print(f"{color_code}{' ' * padding}{line}{reset}")
 
