@@ -121,11 +121,19 @@ def main():
             continue
 
         try:
-            # Send message and get response
-            response = chat.send_message(user_input)
-            print(f"{BOLD}{CYAN}Bot:{RESET} {response.text}\n")
+            # Print Bot prefix first
+            sys.stdout.write(f"{BOLD}{CYAN}Bot:{RESET} ")
+            sys.stdout.flush()
+
+            # Send message and stream response chunks in real-time
+            response = chat.send_message_stream(user_input)
+            for chunk in response:
+                sys.stdout.write(chunk.text)
+                sys.stdout.flush()
+            print("\n")  # Final newline after stream completes
         except Exception as e:
-            print(f"{BOLD}{RED}Bot Error:{RESET} Could not get a response. ({e})\n")
+            # If we already printed "Bot: ", clean up or print error
+            print(f"\n{BOLD}{RED}Bot Error:{RESET} Could not get a response. ({e})\n")
             if "404" in str(e) or "not found" in str(e).lower():
                 print(f"{YELLOW}Debugging Info: Listing available models for your API key...{RESET}")
                 try:
