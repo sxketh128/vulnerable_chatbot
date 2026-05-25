@@ -126,7 +126,7 @@ def main():
             sys.stdout.flush()
 
             # Send message and stream response chunks in real-time
-            response = chat.send_message_stream(user_input)
+            response = chat.send_message(user_input, stream=True)
             for chunk in response:
                 sys.stdout.write(chunk.text)
                 sys.stdout.flush()
