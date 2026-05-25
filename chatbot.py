@@ -2,6 +2,7 @@ import os
 import sys
 import shutil
 import getpass
+from dotenv import load_dotenv
 import google.generativeai as genai
 
 def clear_screen():
@@ -36,30 +37,39 @@ def main():
     BOLD = "\033[1m"
     RESET = "\033[0m"
 
-    clear_screen()
+    # Load dotenv file if it exists
+    load_dotenv()
 
-    # ASCII Header
-    header = f"""
+    # Check if API Key is already set in environment
+    api_key = os.getenv("GEMINI_API_KEY")
+
+    if not api_key:
+        clear_screen()
+
+        # ASCII Header
+        header = f"""
 {BOLD}{BLUE}=================================================={RESET}
 {BOLD}{CYAN}             GEMINI SECURE CHATBOT                {RESET}
 {BOLD}{CYAN}           (Security Testing Sandbox)             {RESET}
 {BOLD}{BLUE}=================================================={RESET}
 """
-    print_centered(header)
-    print("\n" * 2)
-    
-    print_centered("Welcome! This chatbot is configured for prompt injection testing.")
-    print_centered("Please enter your Gemini API Key below to start.")
-    print("\n")
-
-    # Ask for API Key in the middle of the terminal
-    api_key = get_centered_input("Enter Gemini API Key: ").strip()
-
-    if not api_key:
+        print_centered(header)
+        print("\n" * 2)
+        
+        print_centered("Welcome! This chatbot is configured for prompt injection testing.")
+        print_centered("Please enter your Gemini API Key below to start.")
         print("\n")
-        print_centered("Error: API Key cannot be empty.", RED)
-        input("\nPress Enter to exit...")
-        sys.exit(1)
+
+        # Ask for API Key in the middle of the terminal
+        api_key = get_centered_input("Enter Gemini API Key: ").strip()
+
+        if not api_key:
+            print("\n")
+            print_centered("Error: API Key cannot be empty.", RED)
+            input("\nPress Enter to exit...")
+            sys.exit(1)
+    else:
+        api_key = api_key.strip()
 
     # Configure the Gemini API
     try:
