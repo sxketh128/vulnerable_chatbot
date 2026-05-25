@@ -95,7 +95,7 @@ def main():
     try:
         # Initialize Gemini 1.5 Flash model with system instruction
         model = genai.GenerativeModel(
-            model_name="gemini-1.5-flash-latest",
+            model_name="gemini-flash-latest",
             system_instruction=system_instruction
         )
         # Start a chat session to maintain conversation history
