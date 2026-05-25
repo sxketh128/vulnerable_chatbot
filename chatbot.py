@@ -126,6 +126,16 @@ def main():
             print(f"{BOLD}{CYAN}Bot:{RESET} {response.text}\n")
         except Exception as e:
             print(f"{BOLD}{RED}Bot Error:{RESET} Could not get a response. ({e})\n")
+            if "404" in str(e) or "not found" in str(e).lower():
+                print(f"{YELLOW}Debugging Info: Listing available models for your API key...{RESET}")
+                try:
+                    models = [m.name for m in genai.list_models()]
+                    print(f"{YELLOW}Available models to use:{RESET}")
+                    for m in models:
+                        print(f" - {m}")
+                    print()
+                except Exception as list_err:
+                    print(f"{RED}Could not retrieve models list: {list_err}{RESET}\n")
 
 if __name__ == "__main__":
     main()
